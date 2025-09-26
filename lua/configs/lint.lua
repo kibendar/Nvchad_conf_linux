@@ -8,9 +8,10 @@ require("lint").linters_by_ft = {
 	c = { "cpplint" },
 	cpp = { "cpplint" },
 	lua = { "luacheck" },
-	-- rust = { "ast-grep" },
+	rust = { "ast-grep" },
 	bash = { "shellcheck" },
 	kotlin = { "ktlint" },
+	-- xml = { "sonarlint-language-server" },
 }
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {

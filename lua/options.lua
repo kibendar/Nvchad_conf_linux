@@ -14,8 +14,6 @@ vim.opt.relativenumber = true
 
 vim.opt.signcolumn = "yes"
 
-vim.opt.conceallevel = 2
-
 -- Enable spell checking
 vim.opt.spell = true
 

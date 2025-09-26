@@ -11,6 +11,10 @@ obsidian.setup({
 			path = "~/Obsidian/DailyNotes",
 		},
 		{
+			name = "home",
+			path = "~/Obsidian/Hometask/",
+		},
+		{
 			name = "kafka",
 			path = "~/Obsidian/Kafka/",
 		},

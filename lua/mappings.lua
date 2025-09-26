@@ -1,6 +1,9 @@
 require("nvchad.mappings")
+
 local dapui = require("dapui")
+
 dapui.setup() -- Make sure DAP UI is properly set up
+
 local map = vim.keymap.set
 
 -- Diagnostics Toggle Function
@@ -205,9 +208,6 @@ end, { desc = "Toggle Terminal Horizontal" })
 map("n", "<leader>sr", function()
 	require("springboot-nvim").boot_run()
 end, { desc = "Spring Boot Run" })
-map("n", "<leader>ss", function()
-	require("springboot-nvim").boot_stop()
-end, { desc = "Spring Boot Stop" })
 map("n", "<leader>sc", function()
 	require("springboot-nvim").generate_class()
 end, { desc = "Spring Create Class" })
@@ -217,32 +217,6 @@ end, { desc = "Spring Create Interface" })
 map("n", "<leader>se", function()
 	require("springboot-nvim").generate_enum()
 end, { desc = "Spring Create Enum" })
-map("n", "<leader>sp", function()
-	require("springboot-nvim").generate_application_properties()
-end, { desc = "Spring Generate Application Properties" })
-map("n", "<leader>sd", function()
-	require("springboot-nvim").generate_dto()
-end, { desc = "Spring Generate DTO" })
-map("n", "<leader>sC", function()
-	require("springboot-nvim").generate_controller()
-end, { desc = "Spring Generate Controller" })
-map("n", "<leader>sS", function()
-	require("springboot-nvim").generate_service()
-end, { desc = "Spring Generate Service" })
-map("n", "<leader>sR", function()
-	require("springboot-nvim").generate_repository()
-end, { desc = "Spring Generate Repository" })
-map("n", "<leader>sE", function()
-	require("springboot-nvim").generate_entity()
-end, { desc = "Spring Generate Entity" })
-
--- Additional Spring Boot utilities
-map("n", "<leader>sb", function()
-	require("springboot-nvim").generate_boot_run()
-end, { desc = "Spring Boot Generate Run Config" })
-map("n", "<leader>st", function()
-	require("springboot-nvim").generate_test()
-end, { desc = "Spring Generate Test" })
 
 -- URL
 map("n", "gx", "<cmd>URLOpenUnderCursor<cr>")
@@ -295,15 +269,15 @@ end, { desc = "Paste image from the clipboard" })
 -- Basic
 map("i", "jj", "<ESC>")
 
-map("i", "<C-f>", function()
-	return vim.fn["codeium#Accept"]()
-end, { expr = true })
+-- map("i", "<C-f>", function()
+-- 	return vim.fn["codeium#Accept"]()
+-- end, { expr = true })
+--
 
 map("n", "<leader><leader>", "<CMD>w<CR>")
 
 map("n", "<leader>q", "<CMD>qa<CR>")
 
 map("n", "<leader>1", "<CMD>qa!<CR>")
-
 -- Ints mappings
 map("x", "<leader>p", [["_dP]])

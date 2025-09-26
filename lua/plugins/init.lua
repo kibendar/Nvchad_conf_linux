@@ -118,6 +118,13 @@ return {
 		end,
 	},
 	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+		-- use opts = {} for passing setup options
+		-- this is equivalent to setup({}) function
+	},
+	{
 		"max397574/better-escape.nvim",
 		event = "InsertEnter",
 		config = function()
@@ -296,13 +303,13 @@ return {
 		lazy = true,
 		ft = { "java" },
 		dependencies = {
-			"nvim-lua/plenary.nvim",
+			"neovim/nvim-lspconfig",
 			"mfussenegger/nvim-jdtls",
 		},
 		config = function()
 			require("springboot-nvim").setup({
 				-- Optional configuration
-				jdtls_name = "jdtls",
+				jdtls_name = "nvim-jdtls",
 				log_level = vim.log.levels.INFO,
 			})
 		end,
