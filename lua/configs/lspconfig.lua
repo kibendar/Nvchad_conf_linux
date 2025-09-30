@@ -95,12 +95,16 @@ vim.lsp.config.kotlin_language_server = {
 		"pom.xml",
 		".git",
 	},
+	cmd_env = {
+		JAVA_HOME = "/usr/lib/jvm/java-21-openjdk",
+		PATH = "/usr/lib/jvm/java-21-openjdk/bin:" .. vim.env.PATH,
+	},
 	settings = {
 		kotlin = {
 			-- Compiler options
 			compiler = {
 				jvm = {
-					target = "17", -- or "11", "8" depending on your project
+					target = "21", -- or "11", "8" depending on your project
 				},
 			},
 			-- Indexing settings
@@ -131,15 +135,28 @@ vim.lsp.config.kotlin_language_server = {
 }
 -- Python (pyright)
 vim.lsp.config.pyright = {
+	cmd = { "pyright-langserver", "--stdio" },
+	filetypes = { "python" },
+	root_markers = {
+		"pyproject.toml",
+		"setup.py",
+		"setup.cfg",
+		"requirements.txt",
+		"Pipfile",
+		"pyrightconfig.json",
+		".git",
+	},
 	settings = {
 		python = {
 			analysis = {
 				autoSearchPaths = true,
 				useLibraryCodeForTypes = true,
-				diagnosticMode = "workspace",
+				diagnosticMode = "workspace", -- or "openFilesOnly" for better performance
+				typeCheckingMode = "basic", -- "off", "basic", or "strict"
 			},
 		},
 	},
+	single_file_support = true,
 }
 -- JS / TS (tsserver)
 vim.lsp.config.tsserver = {
@@ -163,6 +180,7 @@ vim.lsp.config.clangd = {
 	root_markers = { ".clangd", "compile_commands.json", ".git" },
 }
 -- Lua (lua_ls)
+-- Lua (lua_ls)
 vim.lsp.config.lua_ls = {
 	on_attach = on_attach,
 	capabilities = capabilities,
@@ -172,18 +190,11 @@ vim.lsp.config.lua_ls = {
 				globals = { "vim" },
 			},
 			workspace = {
-				library = {
-					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-					[vim.fn.stdpath("config") .. "/lua"] = true,
-				},
 				checkThirdParty = false,
 			},
 			telemetry = { enable = false },
 		},
 	},
-	root_dir = function()
-		return vim.fn.getcwd()
-	end,
 }
 -- LaTeX (texlab)
 vim.lsp.config.texlab = {

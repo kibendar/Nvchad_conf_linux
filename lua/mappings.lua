@@ -269,10 +269,13 @@ end, { desc = "Paste image from the clipboard" })
 -- Basic
 map("i", "jj", "<ESC>")
 
--- map("i", "<C-f>", function()
--- 	return vim.fn["codeium#Accept"]()
--- end, { expr = true })
---
+-- Codeium
+map("i", "<C-f>", function()
+	return vim.fn["codeium#Accept"]()
+end, { expr = true })
+
+map("n", "<leader>ct", "<CMD>CodeiumToggle<CR>", { desc = "Toggle Codeium" })
+map("n", "<leader>cc", "<CMD>CodeiumChat<CR>", { desc = "Codeium Chat" })
 
 map("n", "<leader><leader>", "<CMD>w<CR>")
 

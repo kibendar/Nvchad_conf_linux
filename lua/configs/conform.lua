@@ -17,7 +17,7 @@ local options = {
 		bash = { "beautysh" },
 		sh = { "beautysh" },
 		rs = { "ast-grep" },
-		kt = { "ktfmt" },
+		kt = { "ast-grep" },
 	},
 
 	format_on_save = {
