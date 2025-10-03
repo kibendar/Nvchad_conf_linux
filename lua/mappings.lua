@@ -32,7 +32,7 @@ M.toggle_diagnostics = function()
 	end
 end
 
-map("n", ";", ":", { desc = "CMD enter command mode" })
+-- map("n", ";", ":", { desc = "CMD enter command mode" })
 
 -- Diagnostics Toggle
 map("n", "<leader>td", M.toggle_diagnostics, { desc = "Toggle diagnostics level" })
@@ -262,7 +262,7 @@ map("n", "<leader>cn", function()
 end)
 
 -- Paste image
-map("n", "<leader>p", function()
+map("n", "<leader>pi", function()
 	require("img-clip").paste_image()
 end, { desc = "Paste image from the clipboard" })
 
@@ -282,5 +282,12 @@ map("n", "<leader><leader>", "<CMD>w<CR>")
 map("n", "<leader>q", "<CMD>qa<CR>")
 
 map("n", "<leader>1", "<CMD>qa!<CR>")
+
+map("n", "<C-d>", "<C-d>zz")
+map("n", "<C-u>", "<C-u>zz")
+
+map("n", "n", "nzzzv")
+map("n", "N", "Nzzzv")
+
 -- Ints mappings
 map("x", "<leader>p", [["_dP]])

@@ -5,6 +5,21 @@ return {
 		opts = require("configs.conform"),
 	},
 	{
+		"lervag/vimtex",
+		lazy = false,
+		config = function()
+			require("configs.vimtex")
+		end,
+	},
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
+		config = function()
+			require("configs.harpoon")
+		end,
+	},
+	{
 		"HakonHarnes/img-clip.nvim",
 		events = "VeryLazy",
 		config = function()
