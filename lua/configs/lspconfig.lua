@@ -1,4 +1,5 @@
 require("nvchad.configs.lspconfig").defaults()
+
 local servers = {
 	"html",
 	"cssls",
@@ -16,6 +17,7 @@ local servers = {
 	"rust-analyzer",
 	"lemminx",
 	"marksman",
+	"tinymist",
 }
 vim.lsp.enable(servers)
 vim.lsp.config("*", {
@@ -180,98 +182,106 @@ vim.lsp.config.clangd = {
 	root_markers = { ".clangd", "compile_commands.json", ".git" },
 }
 -- Lua (lua_ls)
--- Lua (lua_ls)
 vim.lsp.config.lua_ls = {
-	on_attach = on_attach,
-	capabilities = capabilities,
 	settings = {
 		Lua = {
+			runtime = {
+				version = "LuaJIT",
+			},
 			diagnostics = {
 				globals = { "vim" },
 			},
 			workspace = {
+				library = {
+					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+					[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
+					[vim.fn.stdpath("config") .. "/lua"] = true, -- add this too
+				},
 				checkThirdParty = false,
 			},
-			telemetry = { enable = false },
+			telemetry = {
+				enable = false,
+			},
 		},
 	},
 }
--- LaTeX (texlab)
+
+-- latex (texlab)
 vim.lsp.config.texlab = {
 	settings = {
 		texlab = {
 			build = {
 				executable = "latexmk",
 				args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
-				onSave = true,
+				onsave = true,
 			},
-			forwardSearch = {
+			forwardsearch = {
 				executable = "zathura",
 				args = { "--synctex-forward", "%l:1:%f", "%p" },
 			},
 		},
 	},
 }
--- Docker Compose LSP
+-- docker compose lsp
 vim.lsp.config["docker-compose-language-server"] = {
 	cmd = { "docker-compose-langserver", "--stdio" },
 	filetypes = { "yaml.docker-compose", "yaml" },
 	root_markers = { "docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml", ".git" },
 	settings = {
-		dockerCompose = {
+		dockercompose = {
 			enable = true,
 		},
 	},
 }
--- Dockerfile LSP
+-- dockerfile lsp
 vim.lsp.config["dockerfile-language-server"] = {
 	cmd = { "docker-langserver", "--stdio" },
 	filetypes = { "dockerfile" },
-	root_markers = { "Dockerfile", "dockerfile", ".dockerignore", ".git" },
+	root_markers = { "dockerfile", "dockerfile", ".dockerignore", ".git" },
 	settings = {
 		docker = {
 			languageserver = {
 				diagnostics = {
-					-- Enable all diagnostics
-					deprecatedMaintainer = true,
-					directiveCasing = true,
-					emptyContinuationLine = true,
-					instructionCasing = true,
-					instructionCmdMultiple = true,
-					instructionEntrypointMultiple = true,
-					instructionHealthcheckMultiple = true,
-					instructionJSONInSingleQuotes = true,
+					-- enable all diagnostics
+					deprecatedmaintainer = true,
+					directivecasing = true,
+					emptycontinuationline = true,
+					instructioncasing = true,
+					instructioncmdmultiple = true,
+					instructionentrypointmultiple = true,
+					instructionhealthcheckmultiple = true,
+					instructionjsoninsinglequotes = true,
 				},
 				formatter = {
-					ignoreMultilineInstructions = true,
+					ignoremultilineinstructions = true,
 				},
 			},
 		},
 	},
 }
--- Bash LSP (bash-language-server)
+-- bash lsp (bash-language-server)
 vim.lsp.config["bash-language-server"] = {
 	cmd = { "bash-language-server", "start" },
 	filetypes = { "sh", "bash" },
 	root_markers = { ".git", ".bashrc", ".bash_profile" },
 	settings = {
-		bashIde = {
-			-- Enable/disable background analysis
-			backgroundAnalysisMaxFiles = 500,
-			-- Enable/disable shellcheck integration
-			enableSourceErrorDiagnostics = false,
-			-- Glob pattern for files to include in workspace symbol search
-			includeAllWorkspaceSymbols = true,
-			-- Path to shellcheck executable (optional)
-			shellcheckPath = "shellcheck",
-			-- ShellCheck arguments (optional)
-			shellcheckArguments = "--external-sources",
+		bashide = {
+			-- enable/disable background analysis
+			backgroundanalysismaxfiles = 500,
+			-- enable/disable shellcheck integration
+			enablesourceerrordiagnostics = false,
+			-- glob pattern for files to include in workspace symbol search
+			includeallworkspacesymbols = true,
+			-- path to shellcheck executable (optional)
+			shellcheckpath = "shellcheck",
+			-- shellcheck arguments (optional)
+			shellcheckarguments = "--external-sources",
 		},
 	},
 	single_file_support = true,
 }
 
--- XML (lemminx)
+-- xml (lemminx)
 vim.lsp.config.lemminx = {
 	cmd = { "lemminx" },
 	filetypes = { "xml", "xsd", "xsl", "xslt", "svg" },
@@ -285,82 +295,82 @@ vim.lsp.config.lemminx = {
 	},
 	settings = {
 		xml = {
-			-- Server settings
+			-- server settings
 			server = {
-				workDir = "~/.cache/lemminx",
+				workdir = "~/.cache/lemminx",
 			},
-			-- Completion settings
+			-- completion settings
 			completion = {
-				autoCloseTags = true,
-				autoCloseRemovesContent = false,
+				autoclosetags = true,
+				autocloseremovescontent = false,
 			},
-			-- Validation settings
+			-- validation settings
 			validation = {
 				enabled = true,
 				namespaces = {
-					enabled = "always", -- "always", "never", or "onNamespaceEncountered"
+					enabled = "always", -- "always", "never", or "onnamespaceencountered"
 				},
 				schema = {
-					enabled = "always", -- "always", "never", or "onValidSchema"
+					enabled = "always", -- "always", "never", or "onvalidschema"
 				},
-				disallowDocTypeDecl = false,
-				resolveExternalEntities = false,
+				disallowdoctypedecl = false,
+				resolveexternalentities = false,
 			},
-			-- Formatting settings
+			-- formatting settings
 			format = {
 				enabled = true,
-				splitAttributes = false,
-				joinCDATALines = false,
-				joinCommentLines = false,
-				joinContentLines = false,
-				spaceBeforeEmptyCloseTag = true,
-				quotations = "doubleQuotes", -- "doubleQuotes" or "singleQuotes"
-				preserveAttributeLineBreaks = false,
-				preserveEmptyContent = false,
-				preservedNewlines = 2,
-				maxLineWidth = 0, -- 0 means no limit
-				grammarAwareFormatting = true,
+				splitattributes = false,
+				joincdatalines = false,
+				joincommentlines = false,
+				joincontentlines = false,
+				spacebeforeemptyclosetag = true,
+				quotations = "doublequotes", -- "doublequotes" or "singlequotes"
+				preserveattributelinebreaks = false,
+				preserveemptycontent = false,
+				preservednewlines = 2,
+				maxlinewidth = 0, -- 0 means no limit
+				grammarawareformatting = true,
 			},
-			-- Symbol settings
+			-- symbol settings
 			symbols = {
 				enabled = true,
 				excluded = {},
-				maxItemsComputed = 5000,
-				showReferencedGrammars = false,
+				maxitemscomputed = 5000,
+				showreferencedgrammars = false,
 			},
-			-- CodeLens settings
-			codeLens = {
+			-- codelens settings
+			codelens = {
 				enabled = false,
 			},
-			-- Hover settings
+			-- hover settings
 			hover = {
 				enabled = true,
 			},
-			-- Folding settings
+			-- folding settings
 			foldings = {
-				includeClosingTagInFold = false,
+				includeclosingtaginfold = false,
 			},
-			-- Preferences
+			-- preferences
 			preferences = {
-				includeInlayParameterNameHints = "none", -- "none", "literals", or "all"
-				includeInlayPropertyDeclarationTypeHints = false,
-				includeInlayVariableTypeHints = false,
-				includeInlayFunctionLikeReturnTypeHints = false,
-				showSchemaDocumentationType = "all", -- "all", "documentation", or "none"
+				includeinlayparameternamehints = "none", -- "none", "literals", or "all"
+				includeinlaypropertydeclarationtypehints = false,
+				includeinlayvariabletypehints = false,
+				includeinlayfunctionlikereturntypehints = false,
+				showschemadocumentationtype = "all", -- "all", "documentation", or "none"
 			},
-			-- Catalogs for schema/DTD resolution
+			-- catalogs for schema/dtd resolution
 			catalogs = {
-				-- Add paths to XML catalogs if needed
+				-- add paths to xml catalogs if needed
 				-- "path/to/catalog.xml"
 			},
-			-- Java-specific settings (lemminx runs on Java)
+			-- java-specific settings (lemminx runs on java)
 			java = {
-				home = nil, -- Will use JAVA_HOME if not set
+				home = nil, -- will use java_home if not set
 			},
 		},
 	},
 	single_file_support = true,
-	-- Custom initialization options
+	-- custom initialization options
 	init_options = {
 		settings = {
 			xml = {
@@ -373,63 +383,63 @@ vim.lsp.config.lemminx = {
 				},
 			},
 		},
-		extendedClientCapabilities = {
-			codeLens = {
-				codeLensKind = {
+		extendedclientcapabilities = {
+			codelens = {
+				codelenskind = {
 					supported = true,
 				},
 			},
-			actionableNotificationSupported = true,
-			openSettingsCommandSupported = true,
+			actionablenotificationsupported = true,
+			opensettingscommandsupported = true,
 		},
 	},
 }
 
--- Rust (rust-analyzer)
+-- rust (rust-analyzer)
 vim.lsp.config["rust-analyzer"] = {
 	cmd = { "rust-analyzer" },
 	filetypes = { "rust" },
 	root_markers = {
-		"Cargo.toml",
-		"Cargo.lock",
+		"cargo.toml",
+		"cargo.lock",
 		"rust-project.json",
 		".git",
 	},
 	settings = {
 		["rust-analyzer"] = {
-			-- Import settings
+			-- import settings
 			imports = {
 				granularity = {
 					group = "module",
 				},
 				prefix = "self",
 			},
-			-- Cargo settings
+			-- cargo settings
 			cargo = {
-				buildScripts = {
+				buildscripts = {
 					enable = true,
 				},
-				allFeatures = true,
-				loadOutDirsFromCheck = true,
-				runBuildScripts = true,
+				allfeatures = true,
+				loadoutdirsfromcheck = true,
+				runbuildscripts = true,
 			},
-			-- Procedural macros
-			procMacro = {
+			-- procedural macros
+			procmacro = {
 				enable = true,
 				ignored = {},
 				attributes = {
 					enable = true,
 				},
 			},
-			-- Diagnostics
+			-- diagnostics
 			diagnostics = {
 				enable = true,
 				disabled = {},
-				remapPrefix = {},
-				warningsAsHint = {},
-				warningsAsInfo = {},
+				remapprefix = {},
+				warningsashint = {},
+				warningsasinfo = {},
 			},
-			-- Lens settings (show references, implementations, etc.)
+			-- lens settings (show references, implementations, etc.)
 			lens = {
 				enable = true,
 				debug = {
@@ -442,7 +452,7 @@ vim.lsp.config["rust-analyzer"] = {
 					adt = {
 						enable = false,
 					},
-					enumVariant = {
+					enumvariant = {
 						enable = false,
 					},
 					method = {
@@ -456,40 +466,40 @@ vim.lsp.config["rust-analyzer"] = {
 					enable = true,
 				},
 			},
-			-- Inlay hints
-			inlayHints = {
-				bindingModeHints = {
+			-- inlay hints
+			inlayhints = {
+				bindingmodehints = {
 					enable = false,
 				},
-				chainingHints = {
+				chaininghints = {
 					enable = true,
 				},
-				closingBraceHints = {
+				closingbracehints = {
 					enable = true,
-					minLines = 25,
+					minlines = 25,
 				},
-				closureReturnTypeHints = {
+				closurereturntypehints = {
 					enable = "never",
 				},
-				lifetimeElisionHints = {
+				lifetimeelisionhints = {
 					enable = "never",
-					useParameterNames = false,
+					useparameternames = false,
 				},
-				maxLength = 25,
-				parameterHints = {
+				maxlength = 25,
+				parameterhints = {
 					enable = true,
 				},
-				reborrowHints = {
+				reborrowhints = {
 					enable = "never",
 				},
-				renderColons = true,
-				typeHints = {
+				rendercolons = true,
+				typehints = {
 					enable = true,
-					hideClosureInitialization = false,
-					hideNamedConstructor = false,
+					hideclosureinitialization = false,
+					hidenamedconstructor = false,
 				},
 			},
-			-- Completion settings
+			-- completion settings
 			completion = {
 				callable = {
 					snippets = "fill_arguments",
@@ -497,45 +507,45 @@ vim.lsp.config["rust-analyzer"] = {
 				postfix = {
 					enable = true,
 				},
-				privateEditable = {
+				privateeditable = {
 					enable = false,
 				},
 				snippets = {
 					custom = {},
 				},
 			},
-			-- Assist settings (code actions)
+			-- assist settings (code actions)
 			assist = {
-				importEnforceGranularity = true,
-				importPrefix = "plain",
+				importenforcegranularity = true,
+				importprefix = "plain",
 			},
-			-- Call hierarchy
-			callInfo = {
+			-- call hierarchy
+			callinfo = {
 				full = true,
 			},
-			-- Check settings (for cargo check)
-			checkOnSave = {
+			-- check settings (for cargo check)
+			checkonsave = {
 				enable = true,
 				command = "clippy",
-				extraArgs = {},
-				allTargets = true,
+				extraargs = {},
+				alltargets = true,
 			},
-			-- Highlighting settings
-			highlightRelated = {
-				breakPoints = {
+			-- highlighting settings
+			highlightrelated = {
+				breakpoints = {
 					enable = true,
 				},
-				exitPoints = {
+				exitpoints = {
 					enable = true,
 				},
 				references = {
 					enable = true,
 				},
-				yieldPoints = {
+				yieldpoints = {
 					enable = true,
 				},
 			},
-			-- Hover settings
+			-- hover settings
 			hover = {
 				documentation = {
 					enable = true,
@@ -543,7 +553,7 @@ vim.lsp.config["rust-analyzer"] = {
 				links = {
 					enable = true,
 				},
-				memoryLayout = {
+				memorylayout = {
 					alignment = "hexadecimal",
 					enable = false,
 					niches = false,
@@ -551,7 +561,7 @@ vim.lsp.config["rust-analyzer"] = {
 					size = "both",
 				},
 			},
-			-- Workspace settings
+			-- workspace settings
 			workspace = {
 				symbol = {
 					search = {
@@ -560,8 +570,8 @@ vim.lsp.config["rust-analyzer"] = {
 					},
 				},
 			},
-			-- Semantic tokens
-			semanticHighlighting = {
+			-- semantic tokens
+			semantichighlighting = {
 				strings = {
 					enable = true,
 				},
@@ -583,41 +593,58 @@ vim.lsp.config["rust-analyzer"] = {
 					},
 				},
 			},
-			-- Typing settings
+			-- typing settings
 			typing = {
-				autoClosingAngleBrackets = {
+				autoclosinganglebrackets = {
 					enable = false,
 				},
 			},
-			-- Experimental features
+			-- experimental features
 			experimental = {
-				procAttrMacros = true,
+				procattrmacros = true,
 			},
 		},
 	},
-	-- Capabilities for enhanced features
+	-- capabilities for enhanced features
 	capabilities = vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), {
-		textDocument = {
+		textdocument = {
 			completion = {
-				completionItem = {
-					snippetSupport = true,
-					resolveSupport = {
-						properties = { "documentation", "detail", "additionalTextEdits" },
+				completionitem = {
+					snippetsupport = true,
+					resolvesupport = {
+						properties = { "documentation", "detail", "additionaltextedits" },
 					},
 				},
 			},
 		},
 		experimental = {
-			serverStatusNotification = true,
+			serverstatusnotification = true,
 		},
 	}),
-	-- Custom initialization options
+	-- custom initialization options
 	init_options = {
-		lspMux = {
+		lspmux = {
 			version = "1",
 			method = "connect",
 			server = "rust-analyzer",
 		},
 	},
-	single_file_support = false, -- Rust-analyzer works best with Cargo projects
+	single_file_support = false, -- rust-analyzer works best with cargo projects
+}
+
+-- Typst LSP (tinymist)
+vim.lsp.config.tinymist = {
+	cmd = { "tinymist" }, -- make sure 'tinymist' is in your PATH
+	filetypes = { "typst", "typ" },
+	root_markers = { ".git", "typst.toml" },
+	settings = {
+		tinymist = {
+			-- optional settings if tinymist supports them
+			lint = true, -- enable diagnostics/linting
+			completion = true, -- enable completion
+			hover = true, -- hover info
+			outline = true, -- symbols/document outline
+		},
+	},
+	single_file_support = true,
 }

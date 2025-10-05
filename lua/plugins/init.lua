@@ -5,6 +5,12 @@ return {
 		opts = require("configs.conform"),
 	},
 	{
+		"chomosuke/typst-preview.nvim",
+		lazy = false, -- or ft = 'typst'
+		version = "1.*",
+		opts = {}, -- lazy.nvim will implicitly calls `setup {}`
+	},
+	{
 		"lervag/vimtex",
 		lazy = false,
 		config = function()
@@ -230,7 +236,7 @@ return {
 		"folke/neodev.nvim",
 		config = function()
 			require("neodev").setup({
-				library = { plugins = { "nvim-dap-ui" }, types = true },
+				library = { plugins = { "nvim-dap-ui", "nvchad" }, types = true },
 			})
 		end,
 	},

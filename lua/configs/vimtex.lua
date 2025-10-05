@@ -1,10 +1,18 @@
-local present, vimtex = pcall(require, "vimtex")
+local handle = io.popen("wmctrl -m | grep 'Name:' | awk '{print $2}'")
+local win_man = handle:read("*a"):gsub("%s+", "")
+handle:close()
 
-if not present then
-	return
+if win_man == "i3" then
+	vim.g.vimtex_view_method = "zathura"
+elseif win_man == "GNOME" then
+	vim.g.vimtex_view_method = "evince"
 end
 
-vimtex.setup({
-	vimtex_view_method = "zathura",
-	maplocalleader = ",",
-})
+vim.g.vimtex_quickfix_ignore_filters = {
+	"Overfull \\hbox",
+	"Overfull \\vbox",
+	"Underfull \\hbox",
+	"Underfull \\vbox",
+}
+
+vim.g.vimtex_quickfix_open_on_warning = 0

@@ -18,6 +18,7 @@ local options = {
 		sh = { "beautysh" },
 		rs = { "ast-grep" },
 		kt = { "ast-grep" },
+		typ = { "prettypst" },
 	},
 
 	format_on_save = {

@@ -32,6 +32,30 @@ M.toggle_diagnostics = function()
 	end
 end
 
+function AddAllMisspelledWords()
+	local count = 0
+	while true do
+		-- Move to next misspelled word
+		vim.cmd("normal! ]s")
+
+		-- Check if we're still on a misspelled word
+		local ok, result = pcall(vim.fn.spellbadword)
+		if not ok or #result == 0 or result[1] == "" then
+			break -- No more misspelled words
+		end
+
+		-- Add the word to dictionary
+		vim.cmd("normal! zg")
+		count = count + 1
+	end
+
+	if count > 0 then
+		print("Added " .. count .. " words to dictionary")
+	else
+		print("No misspelled words found")
+	end
+end
+
 -- map("n", ";", ":", { desc = "CMD enter command mode" })
 
 -- Diagnostics Toggle
@@ -51,6 +75,8 @@ map("n", "z=", "z=", { desc = "Suggest corrections" })
 map("n", "zg", "zg", { desc = "Add word to dictionary" })
 
 map("n", "zw", "zw", { desc = "Mark word as incorrect" })
+
+map("n", "<leader>az", AddAllMisspelledWords, { desc = "Add all misspelled words to dictionary" })
 
 -- LSP Core Functions (including code generation for missing methods)
 map("n", "<leader>ca", function()
@@ -265,6 +291,37 @@ end)
 map("n", "<leader>pi", function()
 	require("img-clip").paste_image()
 end, { desc = "Paste image from the clipboard" })
+
+-- Typst preview
+map("n", "<leader>tu", "<CMD>TypstPreviewUpdate<CR>", { desc = "Typst Preview Update Binaries" })
+map("n", "<leader>tp", "<CMD>TypstPreview document<CR>", { desc = "Start Typst Preview (Document Mode)" })
+map("n", "<leader>ts", "<CMD>TypstPreview slide<CR>", { desc = "Start Typst Preview (Slide Mode)" })
+map("n", "<leader>tq", "<CMD>TypstPreviewStop<CR>", { desc = "Stop Typst Preview" })
+map("n", "<leader>tt", "<CMD>TypstPreviewToggle<CR>", { desc = "Toggle Typst Preview" })
+map(
+	"n",
+	"<leader>tf",
+	"<CMD>lua require('typst-preview').set_follow_cursor(true)<CR>",
+	{ desc = "Typst Preview Follow Cursor" }
+)
+map(
+	"n",
+	"<leader>tnf",
+	"<CMD>lua require('typst-preview').set_follow_cursor(false)<CR>",
+	{ desc = "Typst Preview No Follow Cursor" }
+)
+map(
+	"n",
+	"<leader>tft",
+	"<CMD>lua require('typst-preview').set_follow_cursor(not require('typst-preview').get_follow_cursor())<CR>",
+	{ desc = "Typst Preview Toggle Follow Cursor" }
+)
+map(
+	"n",
+	"<leader>tsc",
+	"<CMD>lua require('typst-preview').sync_with_cursor()<CR>",
+	{ desc = "Typst Preview Sync Cursor" }
+)
 
 -- Basic
 map("i", "jj", "<ESC>")
