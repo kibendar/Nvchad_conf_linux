@@ -78,43 +78,120 @@ map("n", "zw", "zw", { desc = "Mark word as incorrect" })
 
 map("n", "<leader>az", AddAllMisspelledWords, { desc = "Add all misspelled words to dictionary" })
 
--- LSP Core Functions (including code generation for missing methods)
-map("n", "<leader>ca", function()
-	vim.lsp.buf.code_action()
-end, { desc = "LSP Code Actions (Generate Missing Methods)" })
-map("n", "<leader>rn", function()
-	vim.lsp.buf.rename()
-end, { desc = "LSP Rename Symbol" })
-map("n", "<leader>gd", function()
+-- Navigation & Definition Functions
+map("n", "<leader>lgd", function()
 	vim.lsp.buf.definition()
 end, { desc = "LSP Go to Definition" })
-map("n", "<leader>gD", function()
+
+map("n", "<leader>lgD", function()
 	vim.lsp.buf.declaration()
 end, { desc = "LSP Go to Declaration" })
-map("n", "<leader>gi", function()
+
+map("n", "<leader>lgi", function()
 	vim.lsp.buf.implementation()
 end, { desc = "LSP Go to Implementation" })
-map("n", "<leader>gr", function()
+
+map("n", "<leader>lgr", function()
 	vim.lsp.buf.references()
 end, { desc = "LSP Find References" })
-map("n", "<leader>K", function()
-	vim.lsp.buf.hover()
-end, { desc = "LSP Hover Documentation" })
-map("n", "<leader>k", function()
-	vim.lsp.buf.signature_help()
-end, { desc = "LSP Signature Help" })
-map("n", "<leader>D", function()
+
+map("n", "<leader>lD", function()
 	vim.lsp.buf.type_definition()
 end, { desc = "LSP Type Definition" })
-map("n", "<leader>wa", function()
+
+-- Code Actions & Refactoring
+map("n", "<leader>lca", function()
+	vim.lsp.buf.code_action()
+end, { desc = "LSP Code Actions (Generate Missing Methods)" })
+
+map("n", "<leader>lrn", function()
+	vim.lsp.buf.rename()
+end, { desc = "LSP Rename Symbol" })
+
+map("n", "<leader>lfm", function()
+	vim.lsp.buf.format()
+end, { desc = "LSP Format Buffer" })
+
+map("v", "<leader>lfs", function()
+	vim.lsp.buf.format()
+end, { desc = "LSP Format Selection" })
+
+-- Documentation & Hover
+map("n", "lh", function()
+	vim.lsp.buf.hover()
+end, { desc = "LSP Hover Documentation" })
+
+map("n", "<leader>lk", function()
+	vim.lsp.buf.signature_help()
+end, { desc = "LSP Signature Help" })
+
+-- Symbol & Document Functions
+map("n", "<leader>lds", function()
+	vim.lsp.buf.document_symbol()
+end, { desc = "LSP Document Symbols" })
+
+map("n", "<leader>lws", function()
+	vim.lsp.buf.workspace_symbol()
+end, { desc = "LSP Workspace Symbols" })
+
+-- Document Highlighting
+map("n", "<leader>ldh", function()
+	vim.lsp.buf.document_highlight()
+end, { desc = "LSP Document Highlight" })
+
+map("n", "<leader>lcr", function()
+	vim.lsp.buf.clear_references()
+end, { desc = "LSP Clear References" })
+
+-- Call Hierarchy
+map("n", "<leader>lic", function()
+	vim.lsp.buf.incoming_calls()
+end, { desc = "LSP Incoming Calls" })
+
+map("n", "<leader>loc", function()
+	vim.lsp.buf.outgoing_calls()
+end, { desc = "LSP Outgoing Calls" })
+
+-- Type Hierarchy
+map("n", "<leader>lts", function()
+	vim.lsp.buf.typehierarchy("subtypes")
+end, { desc = "LSP Type Subtypes" })
+
+map("n", "<leader>ltS", function()
+	vim.lsp.buf.typehierarchy("supertypes")
+end, { desc = "LSP Type Supertypes" })
+
+-- Selection Range
+map("n", "<leader>les", function()
+	vim.lsp.buf.selection_range(1)
+end, { desc = "LSP Expand Selection" })
+
+map("n", "<leader>lss", function()
+	vim.lsp.buf.selection_range(-1)
+end, { desc = "LSP Shrink Selection" })
+
+-- Workspace Folder Management
+map("n", "<leader>law", function()
 	vim.lsp.buf.add_workspace_folder()
 end, { desc = "LSP Add Workspace Folder" })
-map("n", "<leader>wr", function()
+
+map("n", "<leader>lrw", function()
 	vim.lsp.buf.remove_workspace_folder()
 end, { desc = "LSP Remove Workspace Folder" })
-map("n", "<leader>wl", function()
+
+map("n", "<leader>llw", function()
 	print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 end, { desc = "LSP List Workspace Folders" })
+
+-- Workspace Diagnostics
+map("n", "<leader>lwd", function()
+	vim.lsp.buf.workspace_diagnostics()
+end, { desc = "LSP Workspace Diagnostics" })
+
+-- Alternative: If you want to keep LSP formatting as backup, use different keybinding
+map("n", "<leader>lf", function()
+	vim.lsp.buf.format({ async = true })
+end, { desc = "LSP Format Document" })
 
 -- Conform.nvim Formatting (replaces LSP formatting)
 map("n", "<leader>f", function()
@@ -128,14 +205,9 @@ map("v", "<leader>f", function()
 	require("conform").format({
 		lsp_fallback = true,
 		async = true,
-		timeout_ms = 1000,
+		timeout_ms = 200,
 	})
 end, { desc = "Format Selection with Conform" })
-
--- Alternative: If you want to keep LSP formatting as backup, use different keybinding
-map("n", "<leader>lf", function()
-	vim.lsp.buf.format({ async = true })
-end, { desc = "LSP Format Document" })
 
 -- Trouble
 map("n", "<leader>qx", "<cmd>TroubleToggle<CR>", { desc = "Open Trouble" })
@@ -298,38 +370,140 @@ map("n", "<leader>tp", "<CMD>TypstPreview document<CR>", { desc = "Start Typst P
 map("n", "<leader>ts", "<CMD>TypstPreview slide<CR>", { desc = "Start Typst Preview (Slide Mode)" })
 map("n", "<leader>tq", "<CMD>TypstPreviewStop<CR>", { desc = "Stop Typst Preview" })
 map("n", "<leader>tt", "<CMD>TypstPreviewToggle<CR>", { desc = "Toggle Typst Preview" })
-map(
-	"n",
-	"<leader>tf",
-	"<CMD>lua require('typst-preview').set_follow_cursor(true)<CR>",
-	{ desc = "Typst Preview Follow Cursor" }
-)
-map(
-	"n",
-	"<leader>tnf",
-	"<CMD>lua require('typst-preview').set_follow_cursor(false)<CR>",
-	{ desc = "Typst Preview No Follow Cursor" }
-)
-map(
-	"n",
-	"<leader>tft",
-	"<CMD>lua require('typst-preview').set_follow_cursor(not require('typst-preview').get_follow_cursor())<CR>",
-	{ desc = "Typst Preview Toggle Follow Cursor" }
-)
-map(
-	"n",
-	"<leader>tsc",
-	"<CMD>lua require('typst-preview').sync_with_cursor()<CR>",
-	{ desc = "Typst Preview Sync Cursor" }
-)
-
--- Basic
-map("i", "jj", "<ESC>")
+-- map(
+-- 	"n",
+-- 	"<leader>tf",
+-- 	"<CMD>lua require('typst-preview').set_follow_cursor(true)<CR>",
+-- 	{ desc = "Typst Preview Follow Cursor" }
+-- )
+-- map(
+-- 	"n",
+-- 	"<leader>tnf",
+-- 	"<CMD>lua require('typst-preview').set_follow_cursor(false)<CR>",
+-- 	{ desc = "Typst Preview No Follow Cursor" }
+-- )
+-- map(
+-- 	"n",
+-- 	"<leader>tft",
+-- 	"<CMD>lua require('typst-preview').set_follow_cursor(not require('typst-preview').get_follow_cursor())<CR>",
+-- 	{ desc = "Typst Preview Toggle Follow Cursor" }
+-- )
+-- map(
+-- 	"n",
+-- 	"<leader>tsc",
+-- 	"<CMD>lua require('typst-preview').sync_with_cursor()<CR>",
+-- 	{ desc = "Typst Preview Sync Cursor" }
+-- )
 
 -- Codeium
 map("i", "<C-f>", function()
 	return vim.fn["codeium#Accept"]()
 end, { expr = true })
+
+-- Basic
+map("i", "jj", "<ESC>")
+
+map("n", "<leader>tc", "<CMD>tabc<CR>", { desc = "Close Tab" })
+
+map("n", "<leader>tn", "<CMD>tabnew<CR>", { desc = "New Tab" })
+
+-- Telescope with horizontal split
+map("n", "<leader>snh", function()
+	require("telescope.builtin").find_files({
+		attach_mappings = function(_, map_telescope)
+			map_telescope("i", "<CR>", function(prompt_bufnr)
+				local action_state = require("telescope.actions.state")
+				local actions = require("telescope.actions")
+				local selection = action_state.get_selected_entry()
+				actions.close(prompt_bufnr)
+				vim.cmd("split")
+				if selection then
+					vim.cmd("edit " .. selection.path)
+				end
+			end)
+			map_telescope("n", "<CR>", function(prompt_bufnr)
+				local action_state = require("telescope.actions.state")
+				local actions = require("telescope.actions")
+				local selection = action_state.get_selected_entry()
+				actions.close(prompt_bufnr)
+				vim.cmd("split")
+				if selection then
+					vim.cmd("edit " .. selection.path)
+				end
+			end)
+			-- Handle Escape in insert mode
+			map_telescope("i", "<Esc>", function(prompt_bufnr)
+				local actions = require("telescope.actions")
+				actions.close(prompt_bufnr)
+				vim.cmd("split")
+			end)
+			-- Handle Ctrl+C in insert mode
+			map_telescope("i", "<C-c>", function(prompt_bufnr)
+				local actions = require("telescope.actions")
+				actions.close(prompt_bufnr)
+				vim.cmd("split")
+			end)
+			-- Handle q in normal mode
+			map_telescope("n", "<Esc>", function(prompt_bufnr)
+				local actions = require("telescope.actions")
+				actions.close(prompt_bufnr)
+				vim.cmd("split")
+			end)
+			return true
+		end,
+	})
+end, { desc = "Split Horizontal with file picker" })
+
+-- Telescope with vertical split
+map("n", "<leader>snv", function()
+	require("telescope.builtin").find_files({
+		attach_mappings = function(_, map_telescope)
+			map_telescope("i", "<CR>", function(prompt_bufnr)
+				local action_state = require("telescope.actions.state")
+				local actions = require("telescope.actions")
+				local selection = action_state.get_selected_entry()
+				actions.close(prompt_bufnr)
+				vim.cmd("vsplit")
+				if selection then
+					vim.cmd("edit " .. selection.path)
+				end
+			end)
+			map_telescope("n", "<CR>", function(prompt_bufnr)
+				local action_state = require("telescope.actions.state")
+				local actions = require("telescope.actions")
+				local selection = action_state.get_selected_entry()
+				actions.close(prompt_bufnr)
+				vim.cmd("vsplit")
+				if selection then
+					vim.cmd("edit " .. selection.path)
+				end
+			end)
+			-- Handle Escape in insert mode
+			map_telescope("i", "<Esc>", function(prompt_bufnr)
+				local actions = require("telescope.actions")
+				actions.close(prompt_bufnr)
+				vim.cmd("vsplit")
+			end)
+			-- Handle Ctrl+C in insert mode
+			map_telescope("i", "<C-c>", function(prompt_bufnr)
+				local actions = require("telescope.actions")
+				actions.close(prompt_bufnr)
+				vim.cmd("vsplit")
+			end)
+			-- Handle Escape in normal mode
+			map_telescope("n", "<Esc>", function(prompt_bufnr)
+				local actions = require("telescope.actions")
+				actions.close(prompt_bufnr)
+				vim.cmd("vsplit")
+			end)
+			return true
+		end,
+	})
+end, { desc = "Split Vertical with file picker" })
+
+map("n", "<leader>sc", "<CMD>close<CR>", { desc = "Close split" })
+
+map("n", "<leader>e", "<CMD>NvimTreeToggle<CR>", { desc = "Toggle Nvim Tree" })
 
 map("n", "<leader>ct", "<CMD>CodeiumToggle<CR>", { desc = "Toggle Codeium" })
 map("n", "<leader>cc", "<CMD>CodeiumChat<CR>", { desc = "Codeium Chat" })

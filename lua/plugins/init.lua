@@ -5,6 +5,10 @@ return {
 		opts = require("configs.conform"),
 	},
 	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+	},
+	{
 		"chomosuke/typst-preview.nvim",
 		lazy = false, -- or ft = 'typst'
 		version = "1.*",
