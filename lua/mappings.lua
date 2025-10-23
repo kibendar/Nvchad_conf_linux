@@ -520,5 +520,8 @@ map("n", "<C-u>", "<C-u>zz")
 map("n", "n", "nzzzv")
 map("n", "N", "Nzzzv")
 
+map("n", "<A-.>", "<C-w>>")
+map("n", "<A-,>", "<C-w><")
+
 -- Ints mappings
 map("x", "<leader>p", [["_dP]])
